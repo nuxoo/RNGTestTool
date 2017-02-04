@@ -71,7 +71,6 @@
             this.charm_c = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.ub_c = new System.Windows.Forms.CheckBox();
-            this.b_moves = new System.Windows.Forms.Button();
             this.honey_c = new System.Windows.Forms.CheckBox();
             this.syc_c = new System.Windows.Forms.CheckBox();
             this.comboBox8 = new System.Windows.Forms.ComboBox();
@@ -491,16 +490,6 @@
             this.ub_c.Text = "UB";
             this.ub_c.UseVisualStyleBackColor = true;
             // 
-            // b_moves
-            // 
-            this.b_moves.Location = new System.Drawing.Point(681, 43);
-            this.b_moves.Name = "b_moves";
-            this.b_moves.Size = new System.Drawing.Size(35, 23);
-            this.b_moves.TabIndex = 41;
-            this.b_moves.Text = "技";
-            this.b_moves.UseVisualStyleBackColor = true;
-            this.b_moves.Click += new System.EventHandler(this.b_moves_Click);
-            // 
             // honey_c
             // 
             this.honey_c.AutoSize = true;
@@ -565,7 +554,6 @@
             this.Controls.Add(this.comboBox8);
             this.Controls.Add(this.syc_c);
             this.Controls.Add(this.honey_c);
-            this.Controls.Add(this.b_moves);
             this.Controls.Add(this.ub_c);
             this.Controls.Add(this.checkBox7);
             this.Controls.Add(this.charm_c);
@@ -660,7 +648,6 @@
         private System.Windows.Forms.CheckBox charm_c;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox ub_c;
-        private System.Windows.Forms.Button b_moves;
         private System.Windows.Forms.CheckBox honey_c;
         private System.Windows.Forms.CheckBox syc_c;
         private System.Windows.Forms.ComboBox comboBox8;
