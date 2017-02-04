@@ -26,14 +26,6 @@ namespace random_search
         [DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static ulong sfmt_next();
 
-        //結局使っていない関数
-        //[DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
-        //public extern static void sfmt_get_random(uint seed, uint min, IntPtr random);
-
-        //[DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
-        //public extern static void sfmt_get_random_t(IntPtr random);
-
-
         //なんだこれ。
         int[] r_no = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
         string[] pers_txt = { "がんばりや", "さみしがり", "ゆうかん", "いじっぱり",
@@ -48,26 +40,6 @@ namespace random_search
         List<CheckBox> Check = new List<CheckBox>();
         string save_file = "fox.txt";
         string config_file = "config.txt";
-
-        /*private ulong[] get_random(uint seed, uint min, uint max)
-        {
-            int NUM = 5;
-            long[] arr = new long[NUM];
-
-            // アンマネージ配列のメモリを確保
-            IntPtr ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(long)) * NUM);
-
-            // 引数でポインタを渡す
-            sfmt_get_random(seed, min, ptr);
-
-            // マネージ配列へコピー
-            Marshal.Copy(ptr, arr, 0, NUM);
-
-            // アンマネージ配列のメモリを解放
-            Marshal.FreeCoTaskMem(ptr);
-
-            return arr;
-        }*/
 
         private void Form1_Load(object sender, EventArgs e)
         {
