@@ -32,7 +32,9 @@ namespace random_search
             "おくびょう", "せっかち", "まじめ", "ようき", "むじゃき", "ひかえめ",
             "おっとり", "れいせい", "てれや", "うっかりや", "おだやか", "おとなしい",
             "なまいき", "しんちょう", "きまぐれ" };
-        char[] kos = { 'H', 'A', 'B', 'S', 'C', 'D' };
+        char[] kos = { 'H', 'A', 'B', 'C', 'D', 'S' };
+        int[] kosi = { 0, 1, 2, 5, 3, 4 };
+
         int[] ret = { -1, 33, 39, 0, 0 };
 
         List<ComboBox> combo = new List<ComboBox>();
@@ -298,7 +300,7 @@ namespace random_search
         {
             string[] list = new string[20];
             int aim = 0;
-            int[] iv = new int[6];
+            int[] ivs = new int[6];
             int cnt = 0;
             int ko = 0;
             bool syc = false;
@@ -308,7 +310,6 @@ namespace random_search
             {
                 syc = random[aim] % 100 >= 50;
                 list[7] = syc ? "○" : "×";
-                //list[7] = (random[aim] % 100).ToString();
                 aim++;
             }
             if (!honey_d && yas_d) //エンカウント
@@ -340,12 +341,12 @@ namespace random_search
 
             aim += 60; //謎の消費
 
-            while (cnt < ko && !jun_d)
+            while (cnt < ko && !jun_d) //仲間呼び出し？
             {
                 int ran = (int)(random[aim] % 6);
-                if (iv[ran] != 32)
+                if (ivs[ran] != 32)
                 {
-                    iv[ran] = 32;
+                    ivs[ran] = 32;
                     cnt++;
                 }
                 aim++;
@@ -353,7 +354,7 @@ namespace random_search
 
             ulong an = random[aim] & 0xFFFFFFFF; //暗号化定数
             list[10] = an.ToString("X8"); aim++;
-            list[9] = kos[an % 6].ToString();
+            int ank = (int)(an % 6);
 
             int sv = 0;
             ulong pid = 0;
@@ -373,24 +374,37 @@ namespace random_search
             while (cnt < 3 && jun_d) //準伝V
             {
                 int ran = (int)(random[aim] % 6);
-                if (iv[ran] != 32)
+                if (ivs[ran] != 32)
                 {
-                    iv[ran] = 32;
+                    ivs[ran] = 32;
                     cnt++;
                 }
                 aim++;
             }
-
+            
             for (int i = 0; i < 6; i++) //IV
             {
-                if (iv[i] == 32)
+                if (ivs[i] == 32)
                 {
-                    list[i] = "31";
+                    ivs[i] = 31;
                 }
                 else
                 {
-                    list[i] = (random[aim] % 32).ToString();
+                    ivs[i] = (int)(random[aim] % 32);
                     aim++;
+                }
+            }
+            
+            int max_iv = 0;
+            for (int i = 0; i < 6; i++) //IV
+            {
+                int ii = kosi[(i + ank) % 6];
+                list[ii] = ivs[ii].ToString();
+
+                if (max_iv < ivs[ii]) //個性
+                {
+                    list[9] = kos[ii].ToString();
+                    max_iv = ivs[ii];
                 }
             }
 
