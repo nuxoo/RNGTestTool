@@ -445,6 +445,16 @@ namespace random_search
 
             Clipboard.SetText(res);
         }
+        private void set_Goal_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            ListViewItem item = new ListViewItem();
+            item = listView1.SelectedItems[0];
+
+            max_o.Value = Convert.ToDecimal(item.SubItems[0].Text);
+        }
 
         private void b_6v_Click(object sender, EventArgs e)
         {
@@ -512,7 +522,10 @@ namespace random_search
                 {
                     int iil = ii + key.Length + 1;
                     if (result == "")
+                    {
                         result += "消費:" + iil;
+                        Clipboard.SetText(iil.ToString());
+                    }
                     else
                         result += ", " + iil;
                     cnt++;

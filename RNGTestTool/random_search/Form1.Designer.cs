@@ -77,6 +77,7 @@
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.nazo_o = new System.Windows.Forms.NumericUpDown();
+            this.set_Goal = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -297,9 +298,10 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copy_all,
-            this.copy_ran});
+            this.copy_ran,
+            this.set_Goal});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
             // 
             // copy_all
             // 
@@ -553,6 +555,13 @@
             this.nazo_o.Size = new System.Drawing.Size(33, 19);
             this.nazo_o.TabIndex = 48;
             // 
+            // set_Goal
+            // 
+            this.set_Goal.Name = "set_Goal";
+            this.set_Goal.Size = new System.Drawing.Size(160, 22);
+            this.set_Goal.Text = "目標消費に指定";
+            this.set_Goal.Click += new System.EventHandler(this.set_Goal_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -666,6 +675,7 @@
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown nazo_o;
+        private System.Windows.Forms.ToolStripMenuItem set_Goal;
     }
 }
 
