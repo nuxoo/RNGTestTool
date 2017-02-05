@@ -48,7 +48,7 @@ namespace random_search
             string[] columns = { "消費", "乱数列", "針", "め", "H", "A", "B", "C", "D", "S", "性格", "技", "し", "an", "pid", "性", "特", "sv", "個", "UB", "種", "Lv", "持", "消", "エ"};
             
             listView1.GridLines = true;
-            listView1.Columns.Add(columns[0], 60); r_no.Add(0); //消費
+            listView1.Columns.Add(columns[0], 66); r_no.Add(0); //消費
             listView1.Columns.Add(columns[1], 140);r_no.Add(1); //乱数列
             listView1.Columns.Add(columns[2], 30); r_no.Add(2); //針
             listView1.Columns.Add(columns[3], 30); r_no.Add(3); //まばたき
@@ -119,8 +119,8 @@ namespace random_search
                 return;
             }
 
-            int min = Convert.ToInt32(min_o.Text);
-            int max = Convert.ToInt32(max_o.Text);
+            int min = (int)min_o.Value;
+            int max = (int)max_o.Value;
             int maximum = max - min;
             int cnt = 0;
             sfmt_set_seed(seed);
