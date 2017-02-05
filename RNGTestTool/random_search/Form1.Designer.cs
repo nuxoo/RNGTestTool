@@ -53,6 +53,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copy_all = new System.Windows.Forms.ToolStripMenuItem();
             this.copy_ran = new System.Windows.Forms.ToolStripMenuItem();
+            this.set_Goal = new System.Windows.Forms.ToolStripMenuItem();
             this.label10 = new System.Windows.Forms.Label();
             this.b_6v = new System.Windows.Forms.Button();
             this.b_reset = new System.Windows.Forms.Button();
@@ -77,7 +78,6 @@
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.nazo_o = new System.Windows.Forms.NumericUpDown();
-            this.set_Goal = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -301,7 +301,7 @@
             this.copy_ran,
             this.set_Goal});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
             // 
             // copy_all
             // 
@@ -316,6 +316,13 @@
             this.copy_ran.Size = new System.Drawing.Size(160, 22);
             this.copy_ran.Text = "乱数列のコピー";
             this.copy_ran.Click += new System.EventHandler(this.copy_ran_Click);
+            // 
+            // set_Goal
+            // 
+            this.set_Goal.Name = "set_Goal";
+            this.set_Goal.Size = new System.Drawing.Size(160, 22);
+            this.set_Goal.Text = "目標消費に指定";
+            this.set_Goal.Click += new System.EventHandler(this.set_Goal_Click);
             // 
             // label10
             // 
@@ -477,11 +484,13 @@
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
+            this.checkBox7.Checked = true;
+            this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox7.Location = new System.Drawing.Point(271, 128);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(60, 16);
             this.checkBox7.TabIndex = 39;
-            this.checkBox7.Text = "列出力";
+            this.checkBox7.Text = "列制限";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // ub_c
@@ -554,13 +563,6 @@
             this.nazo_o.Name = "nazo_o";
             this.nazo_o.Size = new System.Drawing.Size(33, 19);
             this.nazo_o.TabIndex = 48;
-            // 
-            // set_Goal
-            // 
-            this.set_Goal.Name = "set_Goal";
-            this.set_Goal.Size = new System.Drawing.Size(160, 22);
-            this.set_Goal.Text = "目標消費に指定";
-            this.set_Goal.Click += new System.EventHandler(this.set_Goal_Click);
             // 
             // Form1
             // 

@@ -112,7 +112,7 @@ namespace random_search
 
         private void Search_Click(object sender, EventArgs e)
         {
-            int maxrow = checkBox7.Checked ? 10000 : 100;
+            int maxrow = checkBox7.Checked ? 100 : 10000;
             uint seed;
             try
             {
