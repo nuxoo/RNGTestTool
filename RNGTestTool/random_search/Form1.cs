@@ -103,7 +103,6 @@ namespace random_search
             comboBox7.Items.Add("‐");
             comboBox7.Items.AddRange(pers_txt);
             comboBox7.SelectedIndex = 0;
-            comboBox8.SelectedIndex = 0;
             read_file();
             config_read();
         }
@@ -248,7 +247,7 @@ namespace random_search
             charm_d = charm_c.Checked;
             syc_d = syc_c.Checked;
             honey_d = honey_c.Checked;
-            nazo_d = comboBox8.SelectedIndex;
+            nazo_d = (int)nazo_o.Value;
             yas_d = (ub_d && jun_d) || !jun_d;
         }
 

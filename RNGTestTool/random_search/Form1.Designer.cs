@@ -73,13 +73,14 @@
             this.ub_c = new System.Windows.Forms.CheckBox();
             this.honey_c = new System.Windows.Forms.CheckBox();
             this.syc_c = new System.Windows.Forms.CheckBox();
-            this.comboBox8 = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.nazo_o = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nazo_o)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -511,24 +512,10 @@
             this.syc_c.Text = "シンクロ";
             this.syc_c.UseVisualStyleBackColor = true;
             // 
-            // comboBox8
-            // 
-            this.comboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3"});
-            this.comboBox8.Location = new System.Drawing.Point(686, 85);
-            this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(30, 20);
-            this.comboBox8.TabIndex = 44;
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(657, 90);
+            this.label13.Location = new System.Drawing.Point(654, 90);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(23, 12);
             this.label13.TabIndex = 45;
@@ -554,16 +541,28 @@
             this.label14.TabIndex = 47;
             this.label14.Text = "0x";
             // 
+            // nazo_o
+            // 
+            this.nazo_o.Location = new System.Drawing.Point(683, 88);
+            this.nazo_o.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nazo_o.Name = "nazo_o";
+            this.nazo_o.Size = new System.Drawing.Size(33, 19);
+            this.nazo_o.TabIndex = 48;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 402);
             this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.nazo_o);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.checkBox8);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.comboBox8);
             this.Controls.Add(this.syc_c);
             this.Controls.Add(this.honey_c);
             this.Controls.Add(this.ub_c);
@@ -612,6 +611,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nazo_o)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -662,10 +662,10 @@
         private System.Windows.Forms.CheckBox ub_c;
         private System.Windows.Forms.CheckBox honey_c;
         private System.Windows.Forms.CheckBox syc_c;
-        private System.Windows.Forms.ComboBox comboBox8;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown nazo_o;
     }
 }
 
