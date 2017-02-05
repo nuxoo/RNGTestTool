@@ -27,7 +27,7 @@ namespace random_search
         public extern static ulong sfmt_next();
         
         List<int> r_no = new List<int>();
-        string[] pers_txt = { "がんばりや", "さみしがり", "ゆうかん", "いじっぱり",
+        string[] nature_txt = { "がんばりや", "さみしがり", "ゆうかん", "いじっぱり",
             "やんちゃ", "ずぶとい", "すなお", "のんき", "わんぱく", "のうてんき",
             "おくびょう", "せっかち", "まじめ", "ようき", "むじゃき", "ひかえめ",
             "おっとり", "れいせい", "てれや", "うっかりや", "おだやか", "おとなしい",
@@ -99,8 +99,11 @@ namespace random_search
                 combo[i].SelectedIndex = 0;
             }
 
+            string[] nature_items = new string[nature_txt.Length];
+            nature_txt.CopyTo(nature_items, 0);
+            Array.Sort(nature_items);
             comboBox7.Items.Add("‐");
-            comboBox7.Items.AddRange(pers_txt);
+            comboBox7.Items.AddRange(nature_items);
             comboBox7.SelectedIndex = 0;
             read_file();
             config_read();
@@ -365,7 +368,7 @@ namespace random_search
                 list[13] = (random[aim] % 2 + 1).ToString();
                 aim++;
             }
-            list[6] = pers_txt[random[aim] % 25];
+            list[6] = nature_txt[random[aim] % 25];
             if (!syc) //性格
             {
                 aim++;
