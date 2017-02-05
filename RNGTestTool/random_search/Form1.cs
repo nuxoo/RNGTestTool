@@ -25,8 +25,7 @@ namespace random_search
 
         [DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static ulong sfmt_next();
-
-        //なんだこれ。
+        
         List<int> r_no = new List<int>();
         string[] pers_txt = { "がんばりや", "さみしがり", "ゆうかん", "いじっぱり",
             "やんちゃ", "ずぶとい", "すなお", "のんき", "わんぱく", "のうてんき",
