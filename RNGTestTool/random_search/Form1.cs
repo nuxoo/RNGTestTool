@@ -39,6 +39,7 @@ namespace random_search
         List<CheckBox> Check = new List<CheckBox>();
         string save_file = "fox.txt";
         string config_file = "config.txt";
+        private bool cancel = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -151,9 +152,26 @@ namespace random_search
 
             for (int i = 0; i < 110; i++)
                 random.Add(sfmt_next());
+            
+            cancel = Search.Text == "キャンセル";
+            if (cancel)
+            {
+                Search.Text = "計算";
+                return;
+            }
+            else
+            {
+                Search.Text = "キャンセル";
+            }
 
             for (int i = 0; i <= maximum; i++, ii++)
             {
+                if (cancel)
+                {
+                    label10.Text = "キャンセルされました。";
+                    return;
+                }
+
                 random.Add(sfmt_next());
                 string[] row = new string[r_no.Count];
 
@@ -223,6 +241,7 @@ namespace random_search
                     Application.DoEvents();
                 }
             }
+            Search.Text = "計算";
 
             int br = eye_cnt1 * eye1 + eye_cnt2 * eye2;
             string frame = "目的まで：" + (maximum + br + hos) + "F";
