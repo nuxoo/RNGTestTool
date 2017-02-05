@@ -76,6 +76,7 @@
             this.comboBox8 = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -93,7 +94,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(178, 18);
+            this.label2.Location = new System.Drawing.Point(205, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 12);
             this.label2.TabIndex = 2;
@@ -102,7 +103,7 @@
             // seed_o
             // 
             this.seed_o.Font = new System.Drawing.Font("ＭＳ ゴシック", 11F);
-            this.seed_o.Location = new System.Drawing.Point(55, 12);
+            this.seed_o.Location = new System.Drawing.Point(70, 12);
             this.seed_o.MaxLength = 8;
             this.seed_o.Name = "seed_o";
             this.seed_o.Size = new System.Drawing.Size(90, 22);
@@ -111,7 +112,7 @@
             // 
             // min_o
             // 
-            this.min_o.Location = new System.Drawing.Point(238, 15);
+            this.min_o.Location = new System.Drawing.Point(265, 14);
             this.min_o.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -129,7 +130,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(324, 18);
+            this.label3.Location = new System.Drawing.Point(351, 17);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(17, 12);
             this.label3.TabIndex = 5;
@@ -137,7 +138,7 @@
             // 
             // max_o
             // 
-            this.max_o.Location = new System.Drawing.Point(347, 15);
+            this.max_o.Location = new System.Drawing.Point(374, 14);
             this.max_o.Maximum = new decimal(new int[] {
             9999999,
             0,
@@ -354,9 +355,9 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 11F);
-            this.textBox1.Location = new System.Drawing.Point(447, 12);
+            this.textBox1.Location = new System.Drawing.Point(499, 12);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(203, 22);
+            this.textBox1.Size = new System.Drawing.Size(151, 22);
             this.textBox1.TabIndex = 27;
             // 
             // b_search
@@ -543,12 +544,23 @@
             this.checkBox8.Text = "まばたきあたっく";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("ＭＳ ゴシック", 11F);
+            this.label14.Location = new System.Drawing.Point(48, 15);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(23, 15);
+            this.label14.TabIndex = 47;
+            this.label14.Text = "0x";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 402);
             this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.checkBox8);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.comboBox8);
@@ -653,6 +665,7 @@
         private System.Windows.Forms.ComboBox comboBox8;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.Label label14;
     }
 }
 
