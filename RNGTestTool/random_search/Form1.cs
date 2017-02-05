@@ -104,7 +104,6 @@ namespace random_search
             comboBox8.SelectedIndex = 0;
             read_file();
             config_read();
-            moves_read();
         }
 
         private void Search_Click(object sender, EventArgs e)
@@ -580,77 +579,6 @@ namespace random_search
                         break;
                 }
             }
-        }
-        private void moves_read()
-        {
-            if (File.Exists(moves_file))
-            {
-                moves = File.ReadAllLines(moves_file, Encoding.UTF8);
-            }
-            else
-            {
-                MessageBox.Show("技の読み込みに失敗しました。");
-            }
-        }
-        private void b_moves_Click(object sender, EventArgs e)
-        {
-            string key = textBox1.Text;
-            int idx = -1;
-            
-            for (int i = 0; i < moves.Length; i++)
-            {
-                if (key == moves[i])
-                {
-                    idx = i;
-                    break;
-                }
-            }
-
-            if (idx < 0)
-            {
-                MessageBox.Show("そんな技ないよ。");
-                return;
-            }
-
-            uint seed;
-            try
-            {
-                seed = Convert.ToUInt32(seed_o.Text, 16);
-            }
-            catch
-            {
-                MessageBox.Show("seed値が不正です。");
-                return;
-            }
-            uint min = Convert.ToUInt32(min_o.Text);
-            uint max = Convert.ToUInt32(max_o.Text);
-            long maximum = max - min;
-            int cnt = 0;
-            string result = "";
-
-            sfmt_set_seed(seed);
-
-            int ii = 0;
-
-            for (int i = 0; i < min; i++, ii++)
-                sfmt_next();
-
-            for (int i = 0; i <= maximum; i++, ii++)
-            {
-                if (sfmt_next() % (ulong)moves.Length == (ulong)idx)
-                {
-                    if (result == "")
-                        result += "消費:" + ii;
-                    else
-                        result += ", " + ii;
-                    cnt++;
-                }
-            }
-
-            if (result != "")
-                MessageBox.Show(result);
-            else
-                MessageBox.Show("候補が見つかりませんでした。");
         }
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
