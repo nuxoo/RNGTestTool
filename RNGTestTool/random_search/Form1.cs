@@ -25,8 +25,8 @@ namespace random_search
 
         [DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static ulong sfmt_next();
-        
-        List<int> r_no = new List<int>();
+
+        int[] r_no;
         string[] nature_txt = { "がんばりや", "さみしがり", "ゆうかん", "いじっぱり",
             "やんちゃ", "ずぶとい", "すなお", "のんき", "わんぱく", "のうてんき",
             "おくびょう", "せっかち", "まじめ", "ようき", "むじゃき", "ひかえめ",
@@ -48,34 +48,49 @@ namespace random_search
             this.FormClosed += new FormClosedEventHandler(Form_Closed);
             this.SizeChanged += new EventHandler(Form1_SizeChanged);
 
-            string[] columns = { "消費", "乱数列", "針", "め", "H", "A", "B", "C", "D", "S", "性格", "技", "し", "an", "pid", "性", "特", "sv", "個", "UB", "種", "Lv", "持", "消", "エ"};
+            string[] columns = { "消費", "乱数列", "針", "め", "H", "A", "B", "C", "D", "S", "性格", "技", "し", "en", "pid", "性", "特", "sv", "個", "UB", "種", "Lv", "持", "消", "エ"};
             
             listView1.GridLines = true;
-            listView1.Columns.Add(columns[0], 66); r_no.Add(0); //消費
-            listView1.Columns.Add(columns[1], 140);r_no.Add(1); //乱数列
-            listView1.Columns.Add(columns[2], 30); r_no.Add(2); //針
-            listView1.Columns.Add(columns[3], 30); r_no.Add(3); //まばたき
+            List<int> r_no_list = new List<int>();
+            listView1.Columns.Add(columns[0], 66); r_no_list.Add(0); //消費
+            listView1.Columns.Add(columns[1], 140);r_no_list.Add(1); //乱数列
+            listView1.Columns.Add(columns[2], 30); r_no_list.Add(2); //針
+            listView1.Columns.Add(columns[3], 30); r_no_list.Add(3); //まばたき
 
             for (int i = 0; i < 6; i++)
             {
                 listView1.Columns.Add(columns[i + 4], 30); //H~S
-                r_no.Add(4 + i);
+                r_no_list.Add(4 + i);
             }
 
-            listView1.Columns.Add(columns[10], 96); r_no.Add(10);//特性
-            listView1.Columns.Add(columns[12], 36); r_no.Add(11);//シンクロ
-            listView1.Columns.Add(columns[17], 50); r_no.Add(12);//SV
-            listView1.Columns.Add(columns[18], 30); r_no.Add(13);//個性
-            listView1.Columns.Add(columns[13], 76); r_no.Add(14);//PID
-            listView1.Columns.Add(columns[14], 76); r_no.Add(15);//暗号化定数
-            listView1.Columns.Add(columns[15], 36); r_no.Add(16);//性別
-            listView1.Columns.Add(columns[16], 30); r_no.Add(17);//特性
-            listView1.Columns.Add(columns[24], 36); r_no.Add(18);//エンカウント
-            listView1.Columns.Add(columns[19], 36); r_no.Add(19);//UB
-            listView1.Columns.Add(columns[20], 36); r_no.Add(20);//出現ポケモン
-            listView1.Columns.Add(columns[21], 36); r_no.Add(21);//Lv
-            listView1.Columns.Add(columns[22], 30); r_no.Add(22);//持ち物
-            listView1.Columns.Add(columns[23], 30); r_no.Add(23);//消費数
+            listView1.Columns.Add(columns[10], 96); r_no_list.Add(10);//特性
+            listView1.Columns.Add(columns[12], 36); r_no_list.Add(11);//シンクロ
+            listView1.Columns.Add(columns[17], 50); r_no_list.Add(12);//SV
+            listView1.Columns.Add(columns[18], 30); r_no_list.Add(13);//個性
+            listView1.Columns.Add(columns[13], 76); r_no_list.Add(14);//PID
+            listView1.Columns.Add(columns[14], 76); r_no_list.Add(15);//暗号化定数
+            listView1.Columns.Add(columns[15], 36); r_no_list.Add(16);//性別
+            listView1.Columns.Add(columns[16], 30); r_no_list.Add(17);//特性
+            listView1.Columns.Add(columns[24], 36); r_no_list.Add(18);//エンカウント
+            listView1.Columns.Add(columns[19], 36); r_no_list.Add(19);//UB
+            listView1.Columns.Add(columns[20], 36); r_no_list.Add(20);//出現ポケモン
+            listView1.Columns.Add(columns[21], 36); r_no_list.Add(21);//Lv
+            listView1.Columns.Add(columns[22], 30); r_no_list.Add(22);//持ち物
+            listView1.Columns.Add(columns[23], 30); r_no_list.Add(23);//消費数
+
+            int c = r_no_list.Count;
+            r_no = new int[c];
+            for (int i = 0; i < c; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
+                    if (i == r_no_list[j])
+                    {
+                        r_no[i] = j;
+                        break;
+                    }
+                }
+            }
 
             combo.Add(comboBox1);
             combo.Add(comboBox2);
@@ -153,6 +168,7 @@ namespace random_search
             int eye_cnt2 = 0;
             int eye1 = ret[1], eye2 = ret[2];
             int met = ret[3], hos = ret[4];
+            int rowleng = r_no.Length;
             get_datas();
 
             if (maximum < 0)
@@ -164,7 +180,7 @@ namespace random_search
             for (int i = 0; i < min; i++, ii++)
                 sfmt_next();
 
-            for (int i = 0; i < 110; i++)
+            for (int i = 0; i < 100; i++)
                 random.Add(sfmt_next());
             
             cancel = Search.Text == "キャンセル";
@@ -187,7 +203,7 @@ namespace random_search
                 }
 
                 random.Add(sfmt_next());
-                string[] row = new string[r_no.Count];
+                string[] row = new string[rowleng];
 
                 row[r_no[0]] = ii.ToString();
                 row[r_no[1]] = random[0].ToString("X16");
