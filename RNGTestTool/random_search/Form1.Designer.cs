@@ -78,6 +78,7 @@
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.nazo_o = new System.Windows.Forms.NumericUpDown();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.min_o)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.max_o)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -535,7 +536,7 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(117, 128);
+            this.checkBox8.Location = new System.Drawing.Point(101, 128);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(94, 16);
             this.checkBox8.TabIndex = 46;
@@ -564,12 +565,23 @@
             this.nazo_o.Size = new System.Drawing.Size(33, 19);
             this.nazo_o.TabIndex = 48;
             // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(211, 128);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(54, 16);
+            this.checkBox9.TabIndex = 49;
+            this.checkBox9.Text = "±100";
+            this.checkBox9.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 402);
             this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.checkBox9);
             this.Controls.Add(this.nazo_o);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.checkBox8);
@@ -678,6 +690,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown nazo_o;
         private System.Windows.Forms.ToolStripMenuItem set_Goal;
+        private System.Windows.Forms.CheckBox checkBox9;
     }
 }
 

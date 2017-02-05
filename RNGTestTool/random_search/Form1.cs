@@ -112,19 +112,31 @@ namespace random_search
 
         private void Search_Click(object sender, EventArgs e)
         {
-            int maxrow = checkBox7.Checked ? 100 : 10000;
             uint seed;
             try
             {
                 seed = Convert.ToUInt32(seed_o.Text, 16);
-            } catch
+            }
+            catch
             {
                 MessageBox.Show("seed値が不正です。");
                 return;
             }
-
-            int min = (int)min_o.Value;
-            int max = (int)max_o.Value;
+            int maxrow;
+            int min;
+            int max;
+            if (checkBox9.Checked)
+            {
+                maxrow = 201;
+                min = (int)max_o.Value - 100;
+                max = (int)max_o.Value + 100;
+            }
+            else
+            {
+                maxrow = checkBox7.Checked ? 100 : 10000;
+                min = (int)min_o.Value;
+                max = (int)max_o.Value;
+            }
             int maximum = max - min;
             int cnt = 0;
             sfmt_set_seed(seed);
