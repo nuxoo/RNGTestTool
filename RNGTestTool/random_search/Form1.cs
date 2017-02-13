@@ -318,7 +318,6 @@ namespace random_search
             int aim = 0;
             int[] ivs = new int[6];
             int cnt = 0;
-            int ko = 0;
             bool syc = false;
             int tsv = ret[0];
 
@@ -348,7 +347,7 @@ namespace random_search
             {
                 list[16] = (random[aim] % 100).ToString(); aim++; //出現ポケモン
                 list[17] = (random[aim] % 4).ToString(); aim++;   //レベル
-                list[18] = (random[aim] % 60).ToString(); aim++;  //持ち物
+                aim++; //不明
             }
             if (jun_d) //謎の消費
             {
@@ -356,17 +355,6 @@ namespace random_search
             }
 
             aim += 60; //謎の消費
-
-            while (cnt < ko && !jun_d) //仲間呼び出し？
-            {
-                int ran = (int)(random[aim] % 6);
-                if (ivs[ran] != 32)
-                {
-                    ivs[ran] = 32;
-                    cnt++;
-                }
-                aim++;
-            }
 
             ulong an = random[aim] & 0xFFFFFFFF; //暗号化定数
             list[10] = an.ToString("X8"); aim++;
@@ -436,7 +424,8 @@ namespace random_search
             }
             if (!jun_d) //性別
             {
-                list[12] = (random[aim] % 252).ToString(); aim++;
+                list[12] = (random[aim] % 252).ToString(); aim++; //性別
+                list[18] = (random[aim] % 100).ToString();　aim++;//持ち物
             }
 
             list[19] = aim.ToString(); //消費数

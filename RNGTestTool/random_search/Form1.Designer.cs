@@ -529,18 +529,18 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(654, 90);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(23, 12);
+            this.label13.Size = new System.Drawing.Size(28, 12);
             this.label13.TabIndex = 45;
-            this.label13.Text = "謎 :";
+            this.label13.Text = "瞬き:";
             // 
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(101, 128);
+            this.checkBox8.Location = new System.Drawing.Point(99, 128);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(94, 16);
+            this.checkBox8.Size = new System.Drawing.Size(106, 16);
             this.checkBox8.TabIndex = 46;
-            this.checkBox8.Text = "まばたきあたっく";
+            this.checkBox8.Text = "まばたき直後のみ";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
             // label14
@@ -555,7 +555,7 @@
             // 
             // nazo_o
             // 
-            this.nazo_o.Location = new System.Drawing.Point(683, 88);
+            this.nazo_o.Location = new System.Drawing.Point(688, 88);
             this.nazo_o.Maximum = new decimal(new int[] {
             10,
             0,
