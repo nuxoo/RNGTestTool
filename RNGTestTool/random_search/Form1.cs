@@ -163,7 +163,7 @@ namespace random_search
             string[] key = new string[7];
             int ii = 0;
             bool eye = false;
-            bool eye_at = false, clc = true, eye_at_c = checkBox8.Checked;
+            bool eye_at = false, clc = true, eye_at_c = blink_c.Checked;
             int eye_cnt1 = 0;
             int eye_cnt2 = 0;
             int eye1 = ret[1], eye2 = ret[2];
@@ -290,7 +290,9 @@ namespace random_search
         }
 
         bool jun_d, ub_d, charm_d, syc_d, honey_d, yas_d;
-        int nazo_d;
+        int nazo_d, ubs_d;
+        bool[] checks_d = new bool[6];
+        bool only_shiny, only_ub, only_synchronize;
         private void get_datas()
         {
             jun_d = jun_c.Checked;
@@ -300,6 +302,14 @@ namespace random_search
             honey_d = honey_c.Checked;
             nazo_d = (int)nazo_o.Value;
             yas_d = (ub_d && jun_d) || !jun_d;
+            ubs_d = (int)ubs_o.Value;
+
+            for (int i = 0; i < 6; i++)
+                checks_d[i] = Check[i].Checked;
+
+            only_shiny = shiny_c.Checked;
+            only_ub = ubs_c.Checked;
+            only_synchronize = sycs_c.Checked;
         }
 
         private string get_sin(ulong sin)
@@ -334,7 +344,10 @@ namespace random_search
             }
             if (ub_d) //UB
             {
-                list[15] = (random[aim] % 100).ToString();
+                if (ubs_d == -1)
+                    list[15] = (random[aim] % 100).ToString();
+                else
+                    list[15] = (int)(random[aim] % 100) < ubs_d ? "○" : "×";
                 aim++;
             }
             if (syc_d && honey_d && ub_d) //シンクロ
@@ -451,7 +464,7 @@ namespace random_search
                     if (iv % 2 != 1)
                         return false;
                 }
-                else if (Check[i].Checked)
+                else if (checks_d[i])
                 {
                     int ivk = Convert.ToInt32(ab);
                     if (ivk - 1 > iv || ivk + 1 < iv)
@@ -464,7 +477,13 @@ namespace random_search
             if (row[r_no[10]] != key[6] && key[6] != "‐")
                 return false;
 
-            if (shiny_c.Checked && row[r_no[12]]  != "★")
+            if (only_shiny && row[r_no[12]]  != "★")
+                return false;
+
+            if (only_synchronize && syc_d && row[r_no[11]] != "○")
+                return false;
+
+            if (only_ub && ub_d && ubs_d != -1 && row[r_no[19]] != "○")
                 return false;
 
             return true;
