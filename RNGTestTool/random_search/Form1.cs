@@ -331,10 +331,13 @@ namespace random_search
             bool syc = false;
             int tsv = ret[0];
 
-            if (syc_d && (!honey_d || !ub_d)) //シンクロ
+            if (!honey_d || !yas_d) //シンクロ
             {
-                syc = random[aim] % 100 >= 50;
-                list[7] = syc ? "○" : "×";
+                if (syc_d)
+                {
+                    syc = random[aim] % 100 >= 50;
+                    list[7] = syc ? "○" : "×";
+                }
                 aim++;
             }
             if (!honey_d && yas_d) //エンカウント
@@ -350,17 +353,20 @@ namespace random_search
                     list[15] = (int)(random[aim] % 100) < ubs_d ? "○" : "×";
                 aim++;
             }
-            if (syc_d && honey_d && ub_d) //シンクロ
+            if (honey_d && yas_d) //シンクロ
             {
-                syc = random[aim] % 100 >= 50;
-                list[7] = syc ? "○" : "×";
+                if (syc_d)
+                {
+                    syc = random[aim] % 100 >= 50;
+                    list[7] = syc ? "○" : "×";
+                }
                 aim++;
             }
             if (!jun_d)
             {
                 list[16] = (random[aim] % 100).ToString(); aim++; //出現ポケモン
                 list[17] = (random[aim] % 4).ToString(); aim++;   //レベル
-                aim++; //不明
+                aim++; //プレッシャー
             }
             if (jun_d) //謎の消費
             {
@@ -375,7 +381,7 @@ namespace random_search
 
             int sv = 0;
             ulong pid = 0;
-            for (int i = (charm_d) ? 0 : 2; i < 3; i++) //pid
+            for (int i = (charm_d && !jun_d) ? 0 : 2; i < 3; i++) //pid
             {
                 pid = random[aim] & 0xFFFFFFFF; aim++;
                 sv = ((int)(pid >> 16) ^ (int)(pid & 0xFFFF)) >> 4;
