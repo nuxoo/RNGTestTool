@@ -19,6 +19,19 @@ namespace random_search
             InitializeComponent();
         }
 
+        private static Form1 _instance;
+        public static Form1 Instance
+        {
+            get
+            {
+                if (_instance == null || _instance.IsDisposed)
+                {
+                    _instance = new Form1();
+                }
+                return _instance;
+            }
+        }
+
         //SFMTを使えるようにする
         [DllImport("SFMT.dll", CallingConvention = CallingConvention.Cdecl)]
         public extern static void sfmt_set_seed(uint seed);
@@ -34,21 +47,39 @@ namespace random_search
             "なまいき", "しんちょう", "きまぐれ" };
         char[] kos = { 'H', 'A', 'B', 'C', 'D', 'S' };
         int[] kosi = { 0, 1, 2, 5, 3, 4 };
-
-        int[] ret = { -1, 33, 39, 0, 0 };
+        int[] ret = { -1 };
+        int[] p_table = { 20, 40, 50, 60, 70, 80, 90, 95, 99, 100};
+        int[] gender_table = { 126, 0, 189, 63, 30 };
+        int[] item_table = { 50, 55, 60, 80, 100 };
+        string[][] item_txt;
 
         List<ComboBox> combo = new List<ComboBox>();
+        List<ComboBox> combo2 = new List<ComboBox>();
         List<CheckBox> Check = new List<CheckBox>();
         string save_file = "fox.txt";
         string config_file = "config.txt";
+        string list_folder = "list";
         private bool cancel = false;
+        plist p_list;
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.FormClosed += new FormClosedEventHandler(Form_Closed);
             this.SizeChanged += new EventHandler(Form1_SizeChanged);
+            list_o.SelectedIndexChanged += new EventHandler(list_change);
 
-            string[] columns = { "消費", "乱数列", "針", "め", "H", "A", "B", "C", "D", "S", "性格", "技", "し", "en", "pid", "性", "特", "sv", "個", "UB", "種", "Lv", "持", "消", "エ"};
+            if (!File.Exists("SFMT.dll"))
+            {
+                MessageBox.Show("SFMT.dllがありません。");
+                this.Close();
+            }
+
+            item_txt = new string[3][];
+            item_txt[0] = new string[] { "○", "●", "●", "-", "-" };
+            item_txt[1] = new string[] { "-", "☆", "-", "★", "-" };
+            item_txt[2] = new string[] { "○", "☆", "●", "★", "-" };
+
+            string[] columns = { "消費", "乱数列", "針", "め", "H", "A", "B", "C", "D", "S", "性格", "技", "し", "ec", "pid", "性", "特", "psv", "個", "UB", "種族名", "Lv", "持", "消", "エ"};
             
             listView1.GridLines = true;
             List<int> r_no_list = new List<int>();
@@ -73,7 +104,7 @@ namespace random_search
             listView1.Columns.Add(columns[16], 30); r_no_list.Add(17);//特性
             listView1.Columns.Add(columns[24], 36); r_no_list.Add(18);//エンカウント
             listView1.Columns.Add(columns[19], 36); r_no_list.Add(19);//UB
-            listView1.Columns.Add(columns[20], 36); r_no_list.Add(20);//出現ポケモン
+            listView1.Columns.Add(columns[20], 100); r_no_list.Add(20);//種族名
             listView1.Columns.Add(columns[21], 36); r_no_list.Add(21);//Lv
             listView1.Columns.Add(columns[22], 30); r_no_list.Add(22);//持ち物
             listView1.Columns.Add(columns[23], 30); r_no_list.Add(23);//消費数
@@ -99,6 +130,20 @@ namespace random_search
             combo.Add(comboBox5);
             combo.Add(comboBox6);
             combo.Add(comboBox7);
+            combo.Add(comboBox20);
+
+            combo2.Add(comboBox8);
+            combo2.Add(comboBox9);
+            combo2.Add(comboBox10);
+            combo2.Add(comboBox11);
+            combo2.Add(comboBox12);
+            combo2.Add(comboBox13);
+            combo2.Add(comboBox14);
+            combo2.Add(comboBox15);
+            combo2.Add(comboBox16);
+            combo2.Add(comboBox17);
+            combo2.Add(comboBox18);
+            combo2.Add(comboBox19);
 
             Check.Add(checkBox1);
             Check.Add(checkBox2);
@@ -107,24 +152,42 @@ namespace random_search
             Check.Add(checkBox5);
             Check.Add(checkBox6);
 
-            string abl_t = "-\n偶\n奇";
-            for (int i = 0; i < 32; i++)
-                abl_t += "\n" + i;
+            string iv_t = "0";
+            for (int i = 1; i < 32; i++)
+                iv_t += "\n" + i;
+
+            string[] iv_ts = ("-\n偶\n奇\n" + iv_t).Split('\n');
+            string[] iv_ts2 = iv_t.Split('\n');
 
             for (int i = 0; i < 6; i++)
             {
-                combo[i].Items.AddRange(abl_t.Split('\n'));
+                combo[i].Items.AddRange(iv_ts);
                 combo[i].SelectedIndex = 0;
+            }
+
+            for (int i = 0; i < 12; i++)
+            {
+                combo2[i].Items.AddRange(iv_ts2);
+                combo2[i].SelectedIndex = i < 6 ? 0 : 31;
             }
 
             string[] nature_items = new string[nature_txt.Length];
             nature_txt.CopyTo(nature_items, 0);
             Array.Sort(nature_items);
-            comboBox7.Items.Add("‐");
-            comboBox7.Items.AddRange(nature_items);
-            comboBox7.SelectedIndex = 0;
+            for (int i = 6; i <= 7; i++)
+            {
+                combo[i].Items.Add("-");
+                combo[i].Items.AddRange(nature_items);
+                combo[i].SelectedIndex = 0;
+            }
+
+            gender_o.SelectedIndex = 0;
+            ability_o.SelectedIndex = 0;
+            item_o.SelectedIndex = 0;
+
             read_file();
             config_read();
+            read_list_file();
         }
 
         private void Search_Click(object sender, EventArgs e)
@@ -142,15 +205,16 @@ namespace random_search
             int maxrow;
             int min;
             int max;
-            if (checkBox9.Checked)
+            if (radioButton1.Checked)
             {
-                maxrow = 201;
-                min = (int)max_o.Value - 100;
-                max = (int)max_o.Value + 100;
+                int pm = (int)numericUpDown1.Value;
+                maxrow = pm * 2 + 1;
+                min = (int)max_o.Value - pm;
+                max = (int)max_o.Value + pm;
             }
             else
             {
-                maxrow = checkBox7.Checked ? 100 : 10000;
+                maxrow = (int)numericUpDown2.Value;
                 min = (int)min_o.Value;
                 max = (int)max_o.Value;
             }
@@ -161,22 +225,29 @@ namespace random_search
             List<ulong> random = new List<ulong>();
             listView1.Items.Clear();
             string[] key = new string[7];
+            int[] iv_min = new int[6], iv_max = new int[6];
             int ii = 0;
             bool eye = false;
             bool eye_at = false, clc = true, eye_at_c = blink_c.Checked;
-            int eye_cnt1 = 0;
-            int eye_cnt2 = 0;
-            int eye1 = ret[1], eye2 = ret[2];
-            int met = ret[3], hos = ret[4];
+            bool iv_s = checkBox8.Checked;
+            int eye1 = 33, eye2 = 39;
             int rowleng = r_no.Length;
             get_datas();
 
             if (maximum < 0)
+            {
+                MessageBox.Show("minよりmaxの値が小さいです。");
                 return;
+            }
 
             for (int i = 0; i < 7; i++)
                 key[i] = combo[i].Text;
-            
+            for (int i = 0; i < 6; i++)
+            {
+                iv_min[i] = Convert.ToInt32(combo2[i].Text);
+                iv_max[i] = Convert.ToInt32(combo2[i + 6].Text);
+            }
+
             for (int i = 0; i < min; i++, ii++)
                 sfmt_next();
 
@@ -209,17 +280,14 @@ namespace random_search
                 row[r_no[1]] = random[0].ToString("X16");
                 row[r_no[2]] = get_sin(random[0] % 17);
 
-                if (eye_at_c)
+                if (eye_at)
                 {
-                    if (eye_at)
-                    {
-                        clc = true;
-                        eye_at = false;
-                    }
-                    else
-                    {
-                        clc = false;
-                    }
+                    clc = true;
+                    eye_at = false;
+                }
+                else
+                {
+                    clc = false;
                 }
 
                 if (eye)
@@ -227,12 +295,10 @@ namespace random_search
                     if (random[0] % 3 == 0)
                     {
                         row[r_no[3]] = eye2.ToString();
-                        eye_cnt2++;
                     }
                     else
                     {
                         row[r_no[3]] = eye1.ToString();
-                        eye_cnt1++;
                     }
 
                     eye = false;
@@ -240,7 +306,7 @@ namespace random_search
                 }
                 else
                 {
-                    if (random[0] % 128 == 0 && i != 0 && i + met <= maximum)
+                    if (random[0] % 128 == 0)
                     {
                         row[r_no[3]] = "★";
                         eye = true;
@@ -248,15 +314,19 @@ namespace random_search
                     else row[r_no[3]] = "-";
                 }
                 
-                if (cnt < maxrow && clc)
+                if (cnt < maxrow && (!eye_at_c || clc))
                 {
                     string[] list;
-                    list = get_sta(random);
+                    list = get_sta(random, clc, eye_at);
 
                     for (int k = 0; k < list.Length; k++)
                         row[r_no[k + 4]] = list[k];
 
-                    if (k_Search(row, key))
+                    bool k_s;
+                    if (iv_s) k_s = k_Search(row, iv_min, iv_max, key[6]);
+                    else k_s = k_Search(row, key);
+
+                    if (k_s)
                     {
                         rows.Add(new ListViewItem(row));
                         cnt++;
@@ -273,10 +343,6 @@ namespace random_search
             }
             Search.Text = "計算";
 
-            int br = eye_cnt1 * eye1 + eye_cnt2 * eye2;
-            string frame = "目的まで：" + (maximum + br + hos) + "F";
-            label12.Text = "め考慮+" + br + "F : " + frame;
-
             if (cnt > 0)
             {
                 label10.Text = "リスト数：" + cnt;
@@ -289,10 +355,13 @@ namespace random_search
             }
         }
 
-        bool jun_d, ub_d, charm_d, syc_d, honey_d, yas_d;
-        int nazo_d, ubs_d;
         bool[] checks_d = new bool[6];
-        bool only_shiny, only_ub, only_synchronize;
+        bool jun_d, ub_d, charm_d, syc_d, honey_d, yas_d, abl_d, enc_d, nazo60_d;
+        bool only_shiny, only_ub, only_synchronize, only_enc, sync_nature, one_nazo;
+        int nazo_d, nazo2_d, ubs_d, enct_d;
+        int gender_d, ability_d, item_d;
+        ulong lv_h;
+        string nature_d, name_d, lv_d, itemt_d;
         private void get_datas()
         {
             jun_d = jun_c.Checked;
@@ -301,8 +370,14 @@ namespace random_search
             syc_d = syc_c.Checked;
             honey_d = honey_c.Checked;
             nazo_d = (int)nazo_o.Value;
-            yas_d = (ub_d && jun_d) || !jun_d;
+            nazo2_d = (int)nazo2_o.Value;
+            one_nazo = nazo2_d == 0 || nazo_d > nazo2_d;
+            yas_d = yas_o.Checked;
+            abl_d = abl_o.Checked;
+            enc_d = yas_d || ub_d;
             ubs_d = (int)ubs_o.Value;
+            enct_d = (int)enct_o.Value;
+            nazo60_d = nazo60_c.Checked;
 
             for (int i = 0; i < 6; i++)
                 checks_d[i] = Check[i].Checked;
@@ -310,6 +385,17 @@ namespace random_search
             only_shiny = shiny_c.Checked;
             only_ub = ubs_c.Checked;
             only_synchronize = sycs_c.Checked;
+            only_enc = enct_c.Checked;
+            nature_d = combo[7].Text;
+            sync_nature = nature_d != "-";
+            name_d = name_o.Enabled ? name_o.Text : "-";
+            lv_d = lv_o.Enabled ? lv_o.Text : "-";
+            gender_d = gender_o.Enabled ? gender_o.SelectedIndex : 0;
+            ability_d = ability_o.Enabled ? ability_o.SelectedIndex : 0;
+            item_d = item_o.Enabled ? item_o.SelectedIndex : 0;
+            itemt_d = item_o.Text;
+
+            lv_h = (ulong)(p_list.lv_max - p_list.lv_min + 1);
         }
 
         private string get_sin(ulong sin)
@@ -322,7 +408,7 @@ namespace random_search
 
             return str;
         }
-        private string[] get_sta(List<ulong> random)
+        private string[] get_sta(List<ulong> random, bool blink, bool blink2)
         {
             string[] list = new string[20];
             int aim = 0;
@@ -330,8 +416,9 @@ namespace random_search
             int cnt = 0;
             bool syc = false;
             int tsv = ret[0];
+            int p_id = 0;
 
-            if (!honey_d || !yas_d) //シンクロ
+            if (!honey_d) //シンクロ
             {
                 if (syc_d)
                 {
@@ -340,9 +427,12 @@ namespace random_search
                 }
                 aim++;
             }
-            if (!honey_d && yas_d) //エンカウント
+            if (!honey_d && enc_d) //エンカウント
             {
-                list[14] = (random[aim] % 100).ToString();
+                if (enct_d == -1)
+                    list[14] = (random[aim] % 100).ToString();
+                else
+                    list[14] = (int)(random[aim] % 100) < enct_d ? "○" : "×";
                 aim++;
             }
             if (ub_d) //UB
@@ -353,7 +443,7 @@ namespace random_search
                     list[15] = (int)(random[aim] % 100) < ubs_d ? "○" : "×";
                 aim++;
             }
-            if (honey_d && yas_d) //シンクロ
+            if (honey_d) //シンクロ
             {
                 if (syc_d)
                 {
@@ -362,18 +452,43 @@ namespace random_search
                 }
                 aim++;
             }
-            if (!jun_d)
+            if (yas_d)
             {
-                list[16] = (random[aim] % 100).ToString(); aim++; //出現ポケモン
-                list[17] = (random[aim] % 4).ToString(); aim++;   //レベル
+                int ran = (int)(random[aim] % 100); aim++; //出現ポケモン
+                for (int i = 0; i < 10; i++)
+                    if (ran < p_table[i])
+                    {
+                        p_id = i;
+                        break;
+                    }
+                
+                list[16] = p_list.name[p_id];
+
+                list[17] = (p_list.lv_min + (int)(random[aim] % lv_h)).ToString(); aim++;   //レベル
                 aim++; //プレッシャー
             }
-            if (jun_d) //謎の消費
+            if (!yas_d) //瞬き割り込み
             {
-                aim += nazo_d;
+                if (blink2)
+                {
+                    aim += nazo_d > 4 ? 1 : 0;
+                }
+                else if (!blink)
+                {
+                    for (int i = 0; i < nazo_d; i++)
+                    {
+                        int ran = (int)(random[aim] & 127); aim++;
+                        if (ran == 0)
+                        {
+                            aim += nazo_d - i > 4 ? 1 : 0;
+                            break;
+                        }
+                    }
+                }
             }
 
-            aim += 60; //謎の消費
+            if (nazo60_d)
+                aim += 60; //謎の消費
 
             ulong an = random[aim] & 0xFFFFFFFF; //暗号化定数
             list[10] = an.ToString("X8"); aim++;
@@ -381,7 +496,7 @@ namespace random_search
 
             int sv = 0;
             ulong pid = 0;
-            for (int i = (charm_d && !jun_d) ? 0 : 2; i < 3; i++) //pid
+            for (int i = (charm_d && (!jun_d || yas_d)) ? 0 : 2; i < 3; i++) //pid
             {
                 pid = random[aim] & 0xFFFFFFFF; aim++;
                 sv = ((int)(pid >> 16) ^ (int)(pid & 0xFFFF)) >> 4;
@@ -394,7 +509,7 @@ namespace random_search
             if (sv != tsv) list[8] = sv.ToString();
             list[11] = pid.ToString("X8");
 
-            while (cnt < 3 && jun_d) //準伝V
+            while (cnt < 3 && jun_d && !yas_d) //準伝V
             {
                 int ran = (int)(random[aim] % 6);
                 if (ivs[ran] != 32)
@@ -431,20 +546,42 @@ namespace random_search
                 }
             }
 
-            if (!jun_d) //特性
+            if (abl_d || yas_d) //特性
             {
                 list[13] = (random[aim] % 2 + 1).ToString();
                 aim++;
             }
-            list[6] = nature_txt[random[aim] % 25];
+
+            if (sync_nature && syc)
+                list[6] = nature_d;
+            else
+                list[6] = nature_txt[random[aim] % 25];
             if (!syc) //性格
             {
                 aim++;
             }
-            if (!jun_d) //性別
+            if (!jun_d || yas_d)
             {
-                list[12] = (random[aim] % 252).ToString(); aim++; //性別
-                list[18] = (random[aim] % 100).ToString();　aim++;//持ち物
+                int g_t = gender_table[p_list.gender[p_id]]; //性別
+                if (g_t != 0)
+                {
+                    list[12] = (int)(random[aim] % 252) >= g_t ? "♂" : "♀"; aim++;
+                }
+                else list[12] = "-";
+
+                int i_t = p_list.item[p_id]; //持ち物
+                if (i_t == 0)
+                    list[18] = "-";
+                else
+                {
+                    int ran = (int)(random[aim] % 100); aim++;
+                    for (int i = 0; i < 5; i++)
+                        if (ran < item_table[i])
+                        {
+                            list[18] = item_txt[i_t - 1][i];
+                            break;
+                        }
+                }
             }
 
             list[19] = aim.ToString(); //消費数
@@ -477,20 +614,85 @@ namespace random_search
                         return false;
                 }
                 else if (row[r_no[i + 4]] != ab)
-                        return false;
+                    return false;
             }
+
+            return s_Search(row, key[6]);
+        }
+        private bool k_Search(string[] row, int[] min, int[] max, string nature)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                int iv = Convert.ToInt32(row[r_no[i + 4]]);
+                if (min[i] <= max[i])
+                {
+                    if (iv < min[i])
+                        return false;
+                    if (iv > max[i])
+                        return false;
+                }
+                else
+                {
+                    if (iv > min[i])
+                        return false;
+                    if (iv < max[i])
+                        return false;
+                }
+            }
+
+            return s_Search(row, nature);
+        }
+        private bool s_Search(string[] row, string nature)
+        {
+            if (row[r_no[10]] != nature && nature != "-") //性格
+                return false;
+
+            if (only_shiny && row[r_no[12]] != "★") //色違い
+                return false;
+
+            if (only_synchronize && row[r_no[11]] == "×") //シンクロ
+                return false;
+
+            if (only_ub && row[r_no[19]] == "×") //UB
+                return false;
+
+            if (only_enc && row[r_no[18]] == "×") //エンカウント
+                return false;
             
-            if (row[r_no[10]] != key[6] && key[6] != "‐")
+            string str = row[r_no[16]]; //性別
+            if (gender_d == 1 && str != "♂")
+                return false;
+            else if (gender_d == 2 && str != "♀")
                 return false;
 
-            if (only_shiny && row[r_no[12]]  != "★")
+            if (ability_d != 0 && row[r_no[17]] != ability_d.ToString()) //特性
                 return false;
 
-            if (only_synchronize && syc_d && row[r_no[11]] != "○")
+            if (name_d != "-" && row[r_no[20]] != name_d) //種族
                 return false;
 
-            if (only_ub && ub_d && ubs_d != -1 && row[r_no[19]] != "○")
+            if (lv_d != "-" && row[r_no[21]] != lv_d) //Lv
                 return false;
+            
+            if (item_d != 0) //持ち物
+            {
+                str = row[r_no[22]];
+                if (item_d < 5)
+                {
+                    if (str != itemt_d)
+                        return false;
+                }
+                else if (item_d == 5)
+                {
+                    if (str != "○" && str != "●")
+                        return false;
+                }
+                else
+                {
+                    if (str != "☆" && str != "★")
+                        return false;
+                }
+            }
 
             return true;
         }
@@ -523,6 +725,7 @@ namespace random_search
 
             Clipboard.SetText(res);
         }
+
         private void set_Goal_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
@@ -538,6 +741,106 @@ namespace random_search
         {
             set_combo(34);
         }
+
+        private void ub_c_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = ub_c.Checked;
+
+            ubs_c.Enabled = b;
+            ubs_o.Enabled = b;
+            label12.Enabled = b;
+
+            honey_c.Enabled = b || yas_o.Checked;
+        }
+        private void yas_o_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = yas_o.Checked;
+
+            list_o.Enabled = b;
+            enct_c.Enabled = b && !honey_c.Checked;
+            enct_o.Enabled = b && !honey_c.Checked;
+            name_o.Enabled = b;
+            lv_o.Enabled = b;
+            gender_o.Enabled = b;
+            ability_o.Enabled = b;
+            item_o.Enabled = b;
+            label17.Enabled = b;
+            label18.Enabled = b;
+            label19.Enabled = b;
+            label20.Enabled = b;
+            label21.Enabled = b;
+            label22.Enabled = b;
+
+            jun_c.Enabled = !b;
+            abl_o.Enabled = !b;
+            nazo_o.Enabled = !b;
+            nazo2_o.Enabled = !b;
+            charm_c.Enabled = b || !jun_c.Checked;
+            label13.Enabled = !b;
+            honey_c.Enabled = b || ub_c.Checked;
+        }
+        private void jun_c_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = jun_c.Checked;
+
+            charm_c.Enabled = !b;
+        }
+        private void syc_c_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = syc_c.Checked;
+
+            sycs_c.Enabled = b;
+            combo[7].Enabled = b;
+            label16.Enabled = b;
+        }
+        private void honey_c_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = honey_c.Checked;
+            enct_c.Enabled = yas_d && !b;
+            enct_o.Enabled = yas_d && !b;
+        }
+        private void abl_o_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = abl_o.Checked;
+            ability_o.Enabled = b;
+            label19.Enabled = b;
+        }
+        private void blink_c_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = blink_c.Checked || yas_o.Checked;
+            nazo_o.Enabled = !b;
+            nazo2_o.Enabled = !b;
+            label13.Enabled = !b;
+        }
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = radioButton1.Checked;
+            numericUpDown1.Enabled = b;
+            numericUpDown2.Enabled = !b;
+        }
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = radioButton2.Checked;
+            numericUpDown1.Enabled = !b;
+            numericUpDown2.Enabled = b;
+        }
+
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        {
+            bool b = checkBox8.Checked;
+
+            for (int i = 0; i < 6; i++)
+            {
+                Check[i].Visible = !b;
+                combo[i].Visible = !b;
+            }
+
+            for (int i = 0; i < 12; i++)
+            {
+                combo2[i].Visible = b;
+            }
+        }
+
         private void b_reset_Click(object sender, EventArgs e)
         {
             set_combo(0);
@@ -552,10 +855,24 @@ namespace random_search
             if (p == 0)
             {
                 combo[6].SelectedIndex = 0;
+                combo[7].SelectedIndex = 0;
 
                 for (int i = 0; i < 6; i++)
                 {
                     Check[i].Checked = false;
+                }
+
+                for (int i = 0; i < 12; i++)
+                {
+                    combo2[i].SelectedIndex = i < 6 ? 0 : 31;
+                }
+            }
+
+            if (p == 34)
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    combo2[i].SelectedIndex = 31;
                 }
             }
         }
@@ -598,7 +915,7 @@ namespace random_search
             {
                 if (String.Compare(str, key, true) == 0)
                 {
-                    int iil = ii + key.Length + 1;
+                    int iil = ii + key.Length;
                     if (result == "")
                     {
                         result += "消費:" + iil;
@@ -673,11 +990,158 @@ namespace random_search
         }
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-            int def_x = 40, def_y = 202;
+            int def_x = 40, def_y = 230;
             Control c = (Control)sender;
 
             listView1.Width = c.Width - def_x;
             listView1.Height = c.Height - def_y;
+        }
+
+        private void read_list_file()
+        {
+            if (!Directory.Exists(list_folder))
+            {
+                Directory.CreateDirectory(list_folder);
+                return;
+            }
+            
+            string[] files = Directory.GetFiles(list_folder, "*.txt");
+
+            foreach (string s in files)
+            {
+                list_o.Items.Add(Path.GetFileName(s));
+            }
+
+            plist list;
+            if (list_o.Items.Count <= 0)
+            {
+                list_o.Items.Add("none");
+                list = new plist();
+            }
+            else
+            {
+                list = new plist(files[0]);
+                if (!list.success)
+                    list = new plist();
+            }
+            list_o.SelectedIndex = 0;
+
+            set_plist(list);
+        }
+        private void set_plist(plist list)
+        {
+            List<string> lstr = new List<string>();
+            foreach (string s in list.name)
+            {
+                bool b = true;
+                foreach (string s2 in lstr)
+                    if (s == s2)
+                    {
+                        b = false;
+                        break;
+                    }
+                if (b) lstr.Add(s);
+            }
+            name_o.Items.Clear();
+            name_o.Items.Add("-");
+            name_o.Items.AddRange(lstr.ToArray());
+            name_o.SelectedIndex = 0;
+
+            lv_o.Items.Clear();
+            lv_o.Items.Add("-");
+            for (int i = list.lv_min; i <= list.lv_max; i++)
+                lv_o.Items.Add(i);
+
+            lv_o.SelectedIndex = 0;
+
+            p_list = list;
+        }
+        private void list_change(object sender, EventArgs e)
+        {
+            if (p_list != null)
+            {
+                plist list = new plist(list_folder + "/" + list_o.Text);
+
+                if (list.success)
+                    set_plist(list);
+                else
+                    set_plist(new plist());
+            }
+        }
+
+        private void Seed_Search_Click(object sender, EventArgs e)
+        {
+            Form2.Instance.Show();
+            Form2.Instance.Activate();
+        }
+        private void frame_search_Click(object sender, EventArgs e)
+        {
+            Form3.Instance.Show();
+            Form3.Instance.Activate();
+        }
+    }
+
+    class plist
+    {
+        public string[] name = new string[10];
+        public int[] item = new int[10];
+        public int[] gender = new int[10];
+        public int lv_min, lv_max;
+        public bool success;
+
+        public plist()
+        {
+            lv_min = 0;
+            lv_max = 4;
+            for (int i = 0; i < 10; i++)
+            {
+                name[i] = "p" + (i + 1);
+                item[i] = 3;
+            }
+            success = true;
+        }
+        public plist(string file)
+        {
+            try
+            {
+                string[] strs = File.ReadAllLines(file, Encoding.GetEncoding("shift-jis"));
+                int cnt = -1;
+                foreach (string str in strs)
+                {
+                    if (!str.StartsWith("//"))
+                    {
+                        string[] s = str.Split(',');
+                        if (cnt == -1)
+                        {
+                            int lv1 = Convert.ToInt32(s[0]);
+                            int lv2 = Convert.ToInt32(s[1]);
+
+                            lv_min = lv1 < lv2 ? lv1 : lv2;
+                            lv_max = lv1 >= lv2 ? lv1 : lv2;
+                        }
+                        else
+                        {
+                            name[cnt] = s[0];
+                            if (s.Length >= 2 && s[1] != "")
+                                item[cnt] = Convert.ToInt32(s[1]);
+                            if (s.Length >= 3 && s[2] != "")
+                                gender[cnt] = Convert.ToInt32(s[2]);
+                        }
+                        cnt++;
+                    }
+
+                    if (cnt >= 10)
+                        break;
+                }
+
+                if (cnt == 10)
+                    success = true;
+            }
+            catch
+            {
+                MessageBox.Show(file + "の読み込みに失敗しました。");
+                success = false;
+            }
         }
     }
 }
