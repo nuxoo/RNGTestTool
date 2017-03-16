@@ -63,18 +63,18 @@ namespace random_search
             int blinks = (int)numericUpDown1.Value + 1;
             int field_frame = (int)numericUpDown2.Value;
             int honey_frame = (int)numericUpDown3.Value;
-            int min = (int)Form1.Instance.min_o.Value + field_frame + 1;
+            int min = (int)Form1.Instance.min_o.Value + field_frame;
             int max = (int)Form1.Instance.max_o.Value;
             int maximum = max - min;
             Form1.sfmt_set_seed(seed);
 
-            if (maximum < 0)
+            if (max < min)
             {
                 MessageBox.Show("minよりmaxの値が小さいです。");
                 return;
             }
 
-            int aim = 0, frame = 0, yuyo = 0;
+            int aim = min, frame = 0, yuyo = 0;
             int[] stop_frame = new int[blinks];
             bool[] flag = new bool[blinks];
 
@@ -83,9 +83,8 @@ namespace random_search
 
             while (true)
             {
-                int i = 0;
                 int aim_ = 0;
-                for (; i < blinks; i++)
+                for (int i = 0; i < blinks; i++)
                 {
                     if (stop_frame[i] > 0)
                     {
@@ -94,7 +93,7 @@ namespace random_search
                     else if (flag[i])
                     {
                         ulong rand = Form1.sfmt_next(); aim_++;
-                        stop_frame[i] = rand % 3 == 2 ? 35 : 29;
+                        stop_frame[i] = rand % 3 == 0 ? 35 : 29;
                         flag[i] = false;
                     }
                     else
@@ -107,32 +106,32 @@ namespace random_search
                         }
                     }
                 }
-                if (aim + aim_ > maximum)
+                if (aim + aim_ > max)
                     break;
 
                 aim += aim_;
-                frame += i;
+                frame++;
 
-                if (aim == maximum)
+                if (aim == max)
                     yuyo += 1;
             }
 
-            int addframe = maximum - aim;
-            int sframe = frame / blinks, sframe2 = (frame - yuyo) / blinks;
+            int addframe = max - aim;
+            int sframe = frame - yuyo;
 
-            string str2 = yuyo > 1 ? ((double)sframe2 / 30).ToString("F3") + "秒～" : "";
-            string str3 = yuyo > 1 ? (sframe2 * 2) + "F～" : "";
+            string str2 = yuyo > 1 ? ((double)sframe / 30).ToString("F3") + "秒～" : "";
+            string str3 = yuyo > 1 ? (sframe * 2) + "F～" : "";
 
-            string str = maximum + "消費" + " " + sframe + "F";
-            str += "\r\n" + str2 + ((double)sframe / 30).ToString("F3") + "秒";
+            string str = (max - min) + "消費" + " " + frame + "F";
+            str += "\r\n" + str2 + ((double)frame / 30).ToString("F3") + "秒";
             if (yuyo > 1) str += "\r\n" + "猶予:" + yuyo + "/30秒";
             str += "\r\n";
             if (addframe > 0) str += "\r\n" + "追加消費:" + addframe;
-            str += "\r\n" + "EmTimer:" + str3 + (sframe * 2) + "F";
+            str += "\r\n" + "EmTimer:" + str3 + (frame * 2) + "F";
 
             textBox1.Text = str;
 
-            frame_txt = yuyo > 1 ? ((sframe * 2 + sframe2 * 2) / 2) + "" : sframe * 2 + "";
+            frame_txt = yuyo > 1 ? ((frame * 2 + sframe * 2) / 2) + "" : frame * 2 + "";
         }
     }
 }
