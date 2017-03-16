@@ -314,7 +314,7 @@ namespace random_search
                     else row[r_no[3]] = "-";
                 }
                 
-                if (cnt < maxrow && (!eye_at_c || clc))
+                if (!eye_at_c || clc)
                 {
                     string[] list;
                     list = get_sta(random, clc, eye_at);
@@ -340,6 +340,9 @@ namespace random_search
                     label10.Text = i + " / " + maximum;
                     Application.DoEvents();
                 }
+
+                if (cnt >= maxrow)
+                    break;
             }
             Search.Text = "計算";
 

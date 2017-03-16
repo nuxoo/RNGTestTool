@@ -318,8 +318,7 @@ namespace random_search
             {
                 uint rand = (uint)(Form1.sfmt_next() % 17);
                 int j = i < needle_len ? 0 : 1;
-                //if (j > 0)
-                    rand = (17 + rand - hos) % 17;
+                rand = (17 + rand - hos) % 17;
 
                 if (rand == 16)
                     strs[j] += "G";
