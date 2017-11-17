@@ -497,7 +497,6 @@
             this.jun_c.TabIndex = 20;
             this.jun_c.Text = "3V固定";
             this.jun_c.UseVisualStyleBackColor = true;
-            this.jun_c.CheckedChanged += new System.EventHandler(this.jun_c_CheckedChanged);
             // 
             // shiny_c
             // 
@@ -512,9 +511,6 @@
             // charm_c
             // 
             this.charm_c.AutoSize = true;
-            this.charm_c.Checked = true;
-            this.charm_c.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.charm_c.Enabled = false;
             this.charm_c.Location = new System.Drawing.Point(509, 91);
             this.charm_c.Name = "charm_c";
             this.charm_c.Size = new System.Drawing.Size(75, 16);

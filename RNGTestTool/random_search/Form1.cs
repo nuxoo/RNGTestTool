@@ -365,6 +365,8 @@ namespace random_search
         int gender_d, ability_d, item_d;
         ulong lv_h;
         string nature_d, name_d, lv_d, itemt_d;
+        CheckBox[] checks = new CheckBox[12];
+
         private void get_datas()
         {
             jun_d = jun_c.Checked;
@@ -499,7 +501,7 @@ namespace random_search
 
             int sv = 0;
             ulong pid = 0;
-            for (int i = (charm_d && (!jun_d || yas_d)) ? 0 : 2; i < 3; i++) //pid
+            for (int i = (charm_d) ? 0 : 2; i < 3; i++) //pid
             {
                 pid = random[aim] & 0xFFFFFFFF; aim++;
                 sv = ((int)(pid >> 16) ^ (int)(pid & 0xFFFF)) >> 4;
@@ -778,15 +780,8 @@ namespace random_search
             abl_o.Enabled = !b;
             nazo_o.Enabled = !b;
             nazo2_o.Enabled = !b;
-            charm_c.Enabled = b || !jun_c.Checked;
             label13.Enabled = !b;
             honey_c.Enabled = b || ub_c.Checked;
-        }
-        private void jun_c_CheckedChanged(object sender, EventArgs e)
-        {
-            bool b = jun_c.Checked;
-
-            charm_c.Enabled = !b;
         }
         private void syc_c_CheckedChanged(object sender, EventArgs e)
         {
@@ -939,29 +934,68 @@ namespace random_search
                 MessageBox.Show("候補が見つかりませんでした。");
         }
 
+        private void set_cheks()
+        {
+            checks[0] = syc_c;
+            checks[1] = honey_c;
+            checks[2] = jun_c;
+            checks[3] = abl_o;
+            checks[4] = nazo60_c;
+            checks[5] = sycs_c;
+            checks[6] = ub_c;
+            checks[7] = ubs_c;
+            checks[8] = charm_c;
+            checks[9] = shiny_c;
+            checks[10] = yas_o;
+            checks[11] = blink_c;
+        }
         private void write_file()
         {
-            string[] str = new string[6];
+            string[] str = new string[22];
             str[0] = seed_o.Text;
             str[1] = min_o.Text;
             str[2] = max_o.Text;
             str[3] = textBox1.Text;
             str[4] = this.Width.ToString();
             str[5] = this.Height.ToString();
+            str[6] = numericUpDown1.Text;
+            str[7] = numericUpDown2.Text;
+            str[8] = ubs_o.Text;
+            str[9] = nazo_o.Text;
+            for (int i = 0; i < 12; i++)
+            {
+                str[10 + i] = checks[i].Checked.ToString();
+            }
 
             File.WriteAllLines(save_file, str);
         }
         private void read_file()
         {
+            set_cheks();
             if (File.Exists(save_file))
             {
                 string[] str = File.ReadAllLines(save_file);
+                if (str.Length < 22)
+                {
+                    MessageBox.Show("デフォルトの設定で起動します。");
+                    return;
+                }
+
                 seed_o.Text = str[0];
                 min_o.Text = str[1];
                 max_o.Text = str[2];
                 textBox1.Text = str[3];
                 this.Width = Convert.ToInt32(str[4]);
                 this.Height = Convert.ToInt32(str[5]);
+                numericUpDown1.Text = str[6];
+                numericUpDown2.Text = str[7];
+                ubs_o.Text = str[8];
+                nazo_o.Text = str[9];
+
+                for (int i = 0; i < 12; i++)
+                {
+                    checks[i].Checked = str[10 + i] == "True";
+                }
             }
         }
         private void Form_Closed(object sender, FormClosedEventArgs e)
