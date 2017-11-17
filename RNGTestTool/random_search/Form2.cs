@@ -263,7 +263,7 @@ namespace random_search
                 uint res = get_needles(seed, step);
                 if (res == needls)
                 {
-                    if (seed_Matching(seed, rand, needle_len))
+                    if (seed_Matching(seed, rand, needle_len, step))
                     {
                         string[] n_txt = get_needle_txt(seed, needle_len, step, hos);
                         string n2_txt = hos == 0 ? "" : "+" + hos.ToString("D2");
@@ -336,10 +336,10 @@ namespace random_search
 
             return BitConverter.ToUInt32(bs, 0); ;
         }
-        private bool seed_Matching(uint seed, uint[] rand, int needle_len)
+        private bool seed_Matching(uint seed, uint[] rand, int needle_len, int step)
         {
             Form1.sfmt_set_seed(seed);
-            for (int i = 0; i < 417; i++)
+            for (int i = 0; i < step; i++)
                 Form1.sfmt_next();
 
             for (int i = 0; i < needle_len; i++)
