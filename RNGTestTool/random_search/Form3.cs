@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace random_search
 {
@@ -33,16 +34,44 @@ namespace random_search
         private void Form3_Load(object sender, EventArgs e)
         {
             this.FormClosing += new FormClosingEventHandler(Form_Closing);
+            read_file();
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
+            write_file();
             this.Hide();
         }
 
         private string frame_txt = "";
-        
+        private string config_file = Form1.config_path + "/Form3.ini";
+        private void write_file()
+        {
+            string[] strs = new string[4];
+            
+            strs[0] = min_o.Value.ToString();
+            strs[1] = max_o.Value.ToString();
+            strs[2] = numericUpDown1.Value.ToString();
+            strs[3] = numericUpDown2.Value.ToString();
+
+            File.WriteAllLines(config_file, strs);
+        }
+        private void read_file()
+        {
+            if (File.Exists(config_file))
+            {
+                string[] strs = File.ReadAllLines(config_file);
+                if (strs.Length >= 4)
+                {
+                    min_o.Value = Convert.ToInt32(strs[0]);
+                    max_o.Value = Convert.ToInt32(strs[1]);
+                    numericUpDown1.Value = Convert.ToInt32(strs[2]);
+                    numericUpDown2.Value = Convert.ToInt32(strs[3]);
+                }
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (frame_txt != "")

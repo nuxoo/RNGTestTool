@@ -56,8 +56,9 @@ namespace random_search
         List<ComboBox> combo = new List<ComboBox>();
         List<ComboBox> combo2 = new List<ComboBox>();
         List<CheckBox> Check = new List<CheckBox>();
-        string save_file = "fox.txt";
-        string config_file = "config.txt";
+        string save_file = config_path + "/From1.ini";
+        string config_file = config_path + "/tsv.txt";
+        public static string config_path = "./config";
         string list_folder = "list";
         private bool cancel = false;
         plist p_list;
@@ -73,6 +74,9 @@ namespace random_search
                 MessageBox.Show("SFMT.dllがありません。");
                 this.Close();
             }
+
+            if (!Directory.Exists(config_path))
+                Directory.CreateDirectory(config_path);
 
             item_txt = new string[3][];
             item_txt[0] = new string[] { "○", "●", "●", "-", "-" };

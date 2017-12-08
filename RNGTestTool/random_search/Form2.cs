@@ -48,7 +48,7 @@ namespace random_search
             label3.Text = textBox1.Text.Length + "個";
         }
 
-        private string config_file = "fox2.txt";
+        private string config_file = Form1.config_path + "/Form2.ini";
         private void write_file()
         {
             string[] strs = new string[4];
