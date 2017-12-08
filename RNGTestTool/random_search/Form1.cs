@@ -887,13 +887,18 @@ namespace random_search
                 MessageBox.Show("seed値が不正です。");
                 return;
             }
-            uint min = Convert.ToUInt32(min_o.Text);
-            uint max = Convert.ToUInt32(max_o.Text);
-            long maximum = max - min;
+            int min = Convert.ToInt32(min_o.Text);
+            int max = Convert.ToInt32(max_o.Text);
+            int maximum = max - min;
             int cnt = 0;
             string key = textBox1.Text;
             string str = "";
             string result = "";
+            if (maximum < 0)
+            {
+                MessageBox.Show("minよりmaxの値が小さいです。");
+                return;
+            }
 
             if (key == "")
                 return;
