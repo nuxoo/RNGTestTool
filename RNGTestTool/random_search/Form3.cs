@@ -141,6 +141,12 @@ namespace random_search
             int aim_ = 0;
             frame_result result = new frame_result();
 
+            if (min == max)
+            {
+                result.yuyo = 1;
+                return result;
+            }
+
             for (int i = 0; i < min; i++)
                 Form1.sfmt_next();
 
