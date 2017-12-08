@@ -1134,6 +1134,8 @@ namespace random_search
         }
         private void frame_search_Click(object sender, EventArgs e)
         {
+            Form3.Instance.min_o.Value = min_o.Value;
+            Form3.Instance.max_o.Value = max_o.Value;
             Form3.Instance.Show();
             Form3.Instance.Activate();
         }

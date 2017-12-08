@@ -1289,14 +1289,14 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox comboBox20;
         public System.Windows.Forms.TextBox seed_o;
-        public System.Windows.Forms.NumericUpDown min_o;
-        public System.Windows.Forms.NumericUpDown max_o;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.CheckBox nazo60_c;
+        private System.Windows.Forms.NumericUpDown min_o;
+        private System.Windows.Forms.NumericUpDown max_o;
     }
 }
 

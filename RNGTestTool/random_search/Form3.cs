@@ -63,8 +63,8 @@ namespace random_search
             int blinks = (int)numericUpDown1.Value + 1;
             int field_frame = (int)numericUpDown2.Value;
             int honey_frame = (int)numericUpDown3.Value;
-            int min = (int)Form1.Instance.min_o.Value + field_frame;
-            int max = (int)Form1.Instance.max_o.Value;
+            int min = (int)min_o.Value + field_frame;
+            int max = (int)max_o.Value;
 
             if (max < min)
             {
