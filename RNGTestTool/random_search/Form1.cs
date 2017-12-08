@@ -894,6 +894,9 @@ namespace random_search
             string key = textBox1.Text;
             string str = "";
             string result = "";
+            int resultcnt = 0;
+            int nresult = 0;
+
             if (maximum < 0)
             {
                 MessageBox.Show("minよりmaxの値が小さいです。");
@@ -919,13 +922,18 @@ namespace random_search
                 if (String.Compare(str, key, true) == 0)
                 {
                     int iil = ii + key.Length;
-                    if (result == "")
+                    if (resultcnt == 0)
                     {
-                        result += "消費:" + iil;
+                        result += iil;
                         Clipboard.SetText(iil.ToString());
+                        nresult = iil;
+                        resultcnt++;
                     }
                     else
+                    {
                         result += ", " + iil;
+                        resultcnt++;
+                    }
                     cnt++;
                 }
 
@@ -933,8 +941,16 @@ namespace random_search
                 str += get_sin(sfmt_next() % 17);
             }
 
-            if (result != "")
-                MessageBox.Show(result);
+            if (resultcnt == 1)
+            {
+                Form4.Instance.act = true;
+                Form4.Instance.nresult = nresult;
+                Form4.Instance.key_length = key.Length;
+                Form4.Instance.Show();
+                Form4.Instance.Activate();
+            }
+            else if (resultcnt > 1)
+                MessageBox.Show("候補：" + result);
             else
                 MessageBox.Show("候補が見つかりませんでした。");
         }
