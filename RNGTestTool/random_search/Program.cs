@@ -15,9 +15,17 @@ namespace random_search
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(Form1.Instance);
+
+            if (System.IO.File.Exists("SFMT.dll"))
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(Form1.Instance);
+            }
+            else
+            {
+                MessageBox.Show("SFMT.dllがありません。");
+            }
         }
     }
 }

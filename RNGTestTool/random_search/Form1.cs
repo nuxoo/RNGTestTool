@@ -71,12 +71,6 @@ namespace random_search
             this.SizeChanged += new EventHandler(Form1_SizeChanged);
             list_o.SelectedIndexChanged += new EventHandler(list_change);
 
-            if (!File.Exists("SFMT.dll"))
-            {
-                MessageBox.Show("SFMT.dllがありません。");
-                this.Close();
-            }
-
             if (!Directory.Exists(config_path))
                 Directory.CreateDirectory(config_path);
 
