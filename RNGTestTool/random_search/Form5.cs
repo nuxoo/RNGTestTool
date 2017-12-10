@@ -17,14 +17,18 @@ namespace random_search
             InitializeComponent();
         }
 
-        private bool close_cancel = true;
+        private bool close_check = true;
+        private string mode_config = Form1.config_path + "/mode.ini";
         private void Form5_Load(object sender, EventArgs e)
         {
             this.FormClosing += new FormClosingEventHandler(Form_Closing);
         }
         private void Form_Closing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = close_cancel;
+            if (close_check)
+                Form1.Instance.Close();
+            else
+                System.IO.File.WriteAllText(mode_config, Form1.input_mode17.ToString());
         }
 
         private void d_result(DialogResult result, bool b)
@@ -32,7 +36,7 @@ namespace random_search
             if (result == DialogResult.Yes)
             {
                 Form1.input_mode17 = b;
-                close_cancel = false;
+                close_check = false;
                 this.Close();
             }
         }

@@ -74,17 +74,6 @@ namespace random_search
             if (!Directory.Exists(config_path))
                 Directory.CreateDirectory(config_path);
 
-            if (!File.Exists(mode_config))
-            {
-                Form5 form5 = new Form5();
-                form5.ShowDialog();
-                File.WriteAllText(mode_config, input_mode17.ToString());
-            }
-            else
-            {
-                input_mode17 = File.ReadAllText(mode_config) == "True";
-            }
-
             item_txt = new string[3][];
             item_txt[0] = new string[] { "○", "●", "●", "-", "-" };
             item_txt[1] = new string[] { "-", "☆", "-", "★", "-" };
@@ -199,6 +188,16 @@ namespace random_search
             read_file();
             config_read();
             read_list_file();
+
+            if (!File.Exists(mode_config))
+            {
+                Form5 form5 = new Form5();
+                form5.ShowDialog();
+            }
+            else
+            {
+                input_mode17 = File.ReadAllText(mode_config) == "True";
+            }
         }
 
         private void Search_Click(object sender, EventArgs e)
