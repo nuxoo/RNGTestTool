@@ -45,7 +45,10 @@ namespace random_search
         }
         private void textBox_Changed(object sender, EventArgs e)
         {
-            label3.Text = textBox1.Text.Length + "個";
+            if (Form1.input_mode17)
+                label3.Text = textBox1.Text.Length + "個";
+            else
+                label3.Text = Form1.Instance.convert_needle(textBox1.Text).Length + "個";
         }
 
         private string config_file = Form1.config_path + "/Form2.ini";
@@ -91,6 +94,22 @@ namespace random_search
                 return;
             }
             file_path += "\\";
+
+            if (!Form1.input_mode17)
+            {
+                if (needle_len < 1)
+                {
+                    label4.Text = "8個以上針を入力して下さい。";
+                    return;
+                }
+                needle_txt = Form1.Instance.convert_needle(needle_txt);
+                if (needle_len > 0 && needle_txt == "")
+                {
+                    label4.Text = "針の値が不正です。";
+                    return;
+                }
+                needle_len = needle_txt.Length;
+            }
 
             if (needle_len < 8)
             {

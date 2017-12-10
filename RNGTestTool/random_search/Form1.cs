@@ -58,7 +58,9 @@ namespace random_search
         List<CheckBox> Check = new List<CheckBox>();
         string save_file = config_path + "/From1.ini";
         string config_file = config_path + "/tsv.txt";
+        string mode_config = config_path + "/mode.ini";
         public static string config_path = "./config";
+        public static bool input_mode17;
         string list_folder = "list";
         private bool cancel = false;
         plist p_list;
@@ -77,6 +79,17 @@ namespace random_search
 
             if (!Directory.Exists(config_path))
                 Directory.CreateDirectory(config_path);
+
+            if (!File.Exists(mode_config))
+            {
+                Form5 form5 = new Form5();
+                form5.ShowDialog();
+                File.WriteAllText(mode_config, input_mode17.ToString());
+            }
+            else
+            {
+                input_mode17 = File.ReadAllText(mode_config) == "True";
+            }
 
             item_txt = new string[3][];
             item_txt[0] = new string[] { "○", "●", "●", "-", "-" };
@@ -879,6 +892,40 @@ namespace random_search
             }
         }
 
+        public string convert_needle(string key)
+        {
+            string str = "";
+            if (key[key.Length - 1] == ',')
+                key = key.Substring(0, key.Length - 1);
+
+            string[] keys = key.Split(',');
+            for (int i = 0; i < keys.Length; i++)
+            {
+                int j = 0;
+                try
+                {
+                    j = Convert.ToInt32(keys[i]);
+                }
+                catch
+                {
+                    return "";
+                }
+                if (j >= 0 && j <= 9)
+                    str += keys[i];
+                else if (j >= 10 && j <= 16)
+                {
+                    char c = (char)(j + 55);
+                    str += c;
+                }
+                else
+                {
+                    str += "?";
+                }
+            }
+
+            return str;
+        }
+
         private void b_search_Click(object sender, EventArgs e)
         {
             uint seed;
@@ -910,11 +957,20 @@ namespace random_search
             if (key == "")
                 return;
 
-            sfmt_set_seed(seed);
-
+            if (!input_mode17)
+            {
+                key = convert_needle(key);
+                if (key == "")
+                {
+                    MessageBox.Show("針の値が不正です。");
+                    return;
+                }
+            }
+            
             int ii = 0;
             int leng = key.Length;
-
+            
+            sfmt_set_seed(seed);
             for (int i = 0; i < min; i++, ii++)
                 sfmt_next();
 
@@ -1138,9 +1194,9 @@ namespace random_search
         }
         private void frame_search_Click(object sender, EventArgs e)
         {
+            Form3.Instance.min_o.Value = min_o.Value;
+            Form3.Instance.max_o.Value = max_o.Value;
             Form3.Instance.Show();
-            //Form3.Instance.min_o.Value = min_o.Value;
-            //Form3.Instance.max_o.Value = max_o.Value;
             Form3.Instance.Activate();
         }
     }
